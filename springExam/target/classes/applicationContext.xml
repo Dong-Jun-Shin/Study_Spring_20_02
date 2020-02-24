@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		<!-- bean 예제 -->
+<!-- 	<bean id="lg" class="com.spring.polymorphism.LgTV" init-method="initMethod" destroy-method="destroyMethod"/> -->
+<!-- 	<bean id="samsung" class="com.spring.polymorphism.SamsungTV" init-method="initMethod" destroy-method="destroyMethod"/> -->
+
+		<!-- Speaker 객체 생성 -->
+		<bean id="speaker" class="com.spring.polymorphism.SonySpeaker" scope="singleton" />
+<!-- 		<bean id="speaker" class="com.spring.polymorphism.AppleSpeaker" scope="singleton" /> -->
+
+		<!-- 
+			Constructor Injection - 매개변수는 생성자가 변수를 받는 순서로 명시 (기본 생성자는 호출 안한다.) 
+			index 속성은 몇번째 매개변수와 매핑되는지 판단
+		-->
+<!-- 		<bean id="tv" class="com.spring.polymorphism.SamsungTV"> -->
+<!-- 			<constructor-arg ref="speaker" index="0"/> -->
+<!-- 			<constructor-arg value="55000" index="1" /> -->
+<!-- 		</bean> -->
+		
+		<!-- Setter Injection -->
+<!-- 		<bean id="tv" class="com.spring.polymorphism.LgTV"> -->
+<!-- 			<property name="speaker" ref="speaker"></property> -->
+<!-- 			<property name="price" value="270000"></property> -->
+<!-- 		</bean> -->
+		
+		<!-- Setter Injection - p 네임스페이스 사용 -->
+		<bean id="tv" class="com.spring.polymorphism.LgTV" p:speaker-ref="speaker" p:price="270000" />
+</beans>
