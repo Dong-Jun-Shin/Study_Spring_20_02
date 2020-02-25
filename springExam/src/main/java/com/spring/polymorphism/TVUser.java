@@ -3,7 +3,6 @@ package com.spring.polymorphism;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.GenericXmlApplicationContext;
 
-
 public class TVUser {
 	public static void main(String[] args) {
 //		/* Factory 패턴으로 구현 (LgTv) */
