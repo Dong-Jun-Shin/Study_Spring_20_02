@@ -1,4 +1,4 @@
-package com.spring.example;
+package com.spring.example.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -35,5 +35,4 @@ public class HomeController {
 		
 		return "home";
 	}
-	
 }
