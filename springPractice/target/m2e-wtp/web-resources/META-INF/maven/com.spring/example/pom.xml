@@ -153,7 +153,12 @@
 		    <version>2.9.6</version>
 		</dependency>
 		
-		    
+		<!-- OJDBC6-oracle 11g(로컬) -->
+		<dependency>
+			<groupId>oracle</groupId>
+			<artifactId>ojdbc</artifactId>
+			<version>6</version>
+		</dependency>
 	</dependencies>
     <build>
         <plugins>
@@ -211,7 +216,7 @@
 		<repository>
 			<id>local-repository</id>
 			<name>local repository</name>
-			<url>file://${project.basedir}/repo</url>
+			<url>file://${project.basedir}/lib</url>
 		</repository>
 	</repositories>
 </project>
