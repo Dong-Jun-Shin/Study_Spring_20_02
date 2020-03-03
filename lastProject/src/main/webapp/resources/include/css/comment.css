@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+p{
+	margin: 10px;
+}
+
+label{
+	display: inline-block;
+	width: 80px;
+	height: 100%;
+	text-align: center;
+	vertical-align: top;
+}
+
+input{
+	margin: 0px 10px;
+}
+
+form div{
+	margin: 10px 0px;
+}
+
+form div:nth-child(2) label{
+	line-height: 90px;
+}
+
+ul{
+	padding: 0px;
+}
+
+li{
+	list-style: none;
+}

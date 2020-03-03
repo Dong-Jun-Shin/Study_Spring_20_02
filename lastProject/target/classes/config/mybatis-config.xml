@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- DOCTYPE과 DTD, mybatis-3- 뒤의 mapper, Mapper, mapper -> configuration, Config, config로 변경 -->
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!-- <mapper namespace="config.mybatis-config"></mapper> -->
+<configuration>
+	<typeAliases>
+		<!-- 타입에 대한 별칭부여. BoardVO 타입을 가진 '별칭 board'라는 객체 -->
+		<typeAlias type="com.spring.client.board.vo.BoardVO" alias="board"/>
+	</typeAliases>
+</configuration>

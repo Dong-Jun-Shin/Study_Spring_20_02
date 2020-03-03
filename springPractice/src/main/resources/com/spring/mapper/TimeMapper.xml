@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.mapper.TimeMapper">
+	<select id="getTime2" resultType="java.lang.String">
+		SELECT SYSDATE FROM DUAL
+	</select>
+	
+	<select id="getSubjectName" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT s_name FROM subject WHERE s_num = #{s_num}
+	</select>
+
+	<select id="getSubjects" parameterType="int" resultType="com.spring.example.domain.SubjectVO">
+		SELECT no, s_num, s_name FROM subject 
+		<![CDATA[WHERE no >= #{no}]]>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+	</select>
+	
+	<insert id="insertSubject" parameterType="com.spring.example.domain.SubjectVO">
+<!-- 			직접 부여 -->
+<!-- 			INSERT INTO subject(no, s_num, s_name) -->
+<!-- 			VALUES(subject_seq.NEXTVAL, #{s_num}, #{s_name}) -->
+			
+<!-- 	학과번호 자동 부여	 -->
+		INSERT INTO subject(no, s_num, s_name) VALUES(subject_seq.NEXTVAL, 
+		(SELECT TRIM(TO_CHAR(MAX(TO_NUMBER(s_num))+1, '00')) FROM subject), #{s_name})
+	</insert>
+</mapper>
