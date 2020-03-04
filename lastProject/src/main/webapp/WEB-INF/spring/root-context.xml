@@ -24,12 +24,15 @@
    <!-- Mybatis Setting -->
    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
       <property name="dataSource" ref="dataSource" />
+      <!-- src/main/resources의 파일들이 컴파일 되면 classes에 생성된다. -->
+      <!-- 서비스가 되는 동안 사용되는 파일의 위치 (\.metadata\.plugins\org.eclipse.wst.server.core\tmp0\wtpwebapps\lastProject\) -->
+      <!-- classpath : /.metadata/.../WEB-INF/classes 폴더를 가리킴 -->
       <property name="configLocation" value="classpath:config/mybatis-config.xml" />
       <property name="mapperLocations" value="classpath:query/*.xml" />
    </bean>
    
    <!-- <mybatis-spring:scan base-package="com.spring.client.board.dao" /> -->
-   
+   <!-- dao 인터페이스의 구현클래스가 생성될 위치 -->
    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
       <property name="basePackage"> <value>com.spring.**.**.dao</value></property>
    </bean>

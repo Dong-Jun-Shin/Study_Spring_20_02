@@ -102,7 +102,7 @@
 					<artifactId>jmxri</artifactId>
 				</exclusion>
 			</exclusions>
-			<scope>runtime</scope>
+<!-- 			<scope>runtime</scope> -->
 		</dependency>
 
 		<!-- @Inject -->
@@ -172,11 +172,11 @@
 		</dependency>
 		
 		<!-- OJDBC6 -->
-<!-- 		<dependency> -->
-<!-- 			<groupId>oracle</groupId> -->
-<!-- 			<artifactId>ojdbc</artifactId> -->
-<!-- 			<version>6</version> -->
-<!-- 		</dependency> -->
+ 		<dependency>
+ 			<groupId>oracle</groupId>
+ 			<artifactId>ojdbc</artifactId>
+ 			<version>6</version>
+ 		</dependency>
 		
 		<!-- HikariCP 외부 커넥션 풀 lib-->
 		<dependency>
