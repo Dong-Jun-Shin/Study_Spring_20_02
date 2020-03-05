@@ -26,3 +26,5 @@ NOCYCLE;
 
 INSERT INTO spring_board(b_num, b_name, b_title, b_content, b_pwd) VALUES(spring_board_seq.NEXTVAL, '전상수', '공부가 너무 어려워요ㅜ', '전 아무것도 모르겠어요..ㅜ', 1234);
 INSERT INTO spring_board(b_num, b_name, b_title, b_content, b_pwd) VALUES(spring_board_seq.NEXTVAL, '홍길동', 'CLOB이 뭔가요?', 'CLOB이란게 오라클 자료형에서 나왔는데 뭔지 하나도 모르겠어요.. 이게 뭐죠?', 1234);
+
+UPDATE spring_board SET b_title=#{b_title}, b_content=#{b_content}, b_pwd=#{b_pwd}

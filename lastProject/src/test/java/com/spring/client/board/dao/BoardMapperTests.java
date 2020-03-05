@@ -49,4 +49,32 @@ public class BoardMapperTests {
 		
 		log.info(bdao.boardDetail(bvo));
 	}
+	
+	@Test
+	public void testPwdConfirm() {
+		BoardVO bvo = new BoardVO();
+		bvo.setB_num(9);
+		bvo.setB_pwd("1234");
+		
+		log.info(bdao.pwdConfirm(bvo));
+	}
+	
+	@Test
+	public void testBoardDelete() {
+		BoardVO bvo = new BoardVO();
+		bvo.setB_num(9);
+		
+		log.info(bdao.boardDelete(bvo.getB_num()));
+	}
+	
+	@Test
+	public void testBoardUpdate() {
+		BoardVO bvo = new BoardVO();
+		bvo.setB_num(10);
+		bvo.setB_title("김처얼수");
+		bvo.setB_content("집집");
+		bvo.setB_pwd("1234");
+		
+		log.info(bdao.boardUpdate(bvo));
+	}
 }

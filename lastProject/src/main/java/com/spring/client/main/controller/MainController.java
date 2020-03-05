@@ -11,4 +11,9 @@ public class MainController {
 	public String main() {
 		return "main";
 	}
+	
+	@RequestMapping(value = "/list")
+	public String list() {
+		return "list";
+	}
 }
