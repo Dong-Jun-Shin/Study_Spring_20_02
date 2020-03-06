@@ -66,7 +66,7 @@
 	</head>
 	<body>
 		<div class="contentContainer container">
-			<div class="contentTit page-header"><h3 class="text-center">게시판 글작성</h3></div>
+<!-- 			<div class="contentTit page-header"><h3 class="text-center">게시판 글작성</h3></div> -->
 		
 			<div class="contentTB text-center">
 				<form id="f_writeForm" name="f_writeForm" class="form-horizontal">

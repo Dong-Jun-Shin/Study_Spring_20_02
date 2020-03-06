@@ -106,7 +106,7 @@
                <input type="hidden" name="b_num" value="${detail.b_num}"/>
             </form>
 
-			<div class="contentTit page-header"><h3 class="text-center">게시판 상세보기</h3></div>
+<!-- 			<div class="contentTit page-header"><h3 class="text-center">게시판 상세보기</h3></div> -->
          
             <%--===================== 비밀번호 확인 버튼 및 추가 시작 ================= --%>
             <div id="boardPwdBut" class="row text-center">

@@ -29,10 +29,37 @@
 
 <!-- 		<script type="text/javascript" src="/resources/include/js/common.js"></script> -->
 		<script type="text/javascript" src="/resources/include/js/jquery-3.3.1.min.js"></script>
+		<script type="text/javascript" src="/resources/include/js/common.js"></script>
 		<!-- 부트스트랩 -->
 		<script type="text/javascript" src="/resources/include/dist/js/bootstrap.min.js"></script>
 		<script type="text/javascript">
 			$(function(){
+				/* 검색 후 검색 대상과 검색 단어 출력 */
+				var word = "<c:out value='${data.keyword}' />";
+				var value="";
+				if(word != ""){
+					$("#search").val("<c:out value = '${data.search}' />");
+					$("#keyword").val("<c:out value = '${data.keyword}' />");
+					
+					if($("#search").val() != 'b_content'){
+						if($("#search").val() == 'b_title') 
+							value = "#list tr td.goDetail";
+						else if($("#search").val() == 'b_name')
+							value = "#list tr td.name";
+						//$("#list tr td.name:contains('준')").html() = 준이 포함된 결과물
+						console.log($(value + ":contains('" + word + "')").html());
+						
+						// :contains()는 특정 텍스트를 포함한 요소반환)
+						// $("#list tr td.name:contains('이름')");
+						$(value + ":contains('" + word + "')").each(function(){
+							// g 글로벌, i 대소문자 상관x
+							var regex = new RegExp(word, 'gi');
+							// default.css에 정의된 클래스를 추가
+							$(this).html($(this).html().replace(regex, "<span class='required'>" + word + "</span>"));
+						});
+					}
+				}
+				
 				/* 글쓰기 버튼 클릭 시, 처리 이벤트 */
 				$("#insertFormBtn").click(function(){
 					location.href = "/board/writeForm";
@@ -51,19 +78,68 @@
 					
 					$("#detailForm").submit();
 				})
-			})
+				
+				/* 검색 대상이 변경될 때마다 처리 이벤트 */
+				$("#search").change(function(){
+					if($("#search").val()=="all"){
+						$("#keyword").val("전체 데이터 조회합니다.");
+					}else if($("#search").val()!="all"){
+						$("#keyword").val("");
+						$("#keyword").focus();
+					}
+				});
+				
+				/* 검색 버튼 클릭 시 처리 이벤트 */
+				$("#searchData").click(function(){
+					if($("#search").val()!="all"){
+						if(checkExp("#keyword", "검색어")) return;
+					}
+					goPage();
+				});
+				
+				/* 글쓰기 버튼 클릭 시 처리 이벤트 */
+				$("#insertFormBtn").click(function(){
+					location.href = "/board/writeForm";
+				});
+				
+				/* 검색 기능을 수행할 함수 */
+				function goPage(){
+					if($("#search").val()=="all"){
+						$("#keyword").val("");
+					}
+					$("#f_search").attr({
+						"method":"get",
+						"action":"/board/boardList"
+					});
+					$("#f_search").submit();
+				}
+			});
 		</script>
 	</head>
 	<body>
 		<div class="container">
-			<div class="page-header"><h3 class="text-center">게시판 리스트</h3></div>
+<!-- 			<div class="page-header"><h3 class="text-center">게시판 리스트</h3></div> -->
 			
 			<form id="detailForm">
 				<input type="hidden" id="b_num" name="b_num" />
 			</form>
 			
 			<%-- 검색기능 시작 --%>
-<!-- 			<div id="boardSearch" class="text-right"></div> -->
+			<div id="boardSearch" class="text-right">
+				<form id="f_search" name="f_search" class="form-inline">
+					<div class="form-group">
+						<label>검색조건</label>
+						<select id="search" name="search" class="form-control">
+							<option value="all">전체</option>
+							<option value="b_title">제목</option>
+							<option value="b_content">내용</option>
+							<option value="b_name">작성자</option>
+						</select>
+						<input type="text" name="keyword" id="keyword" value="검색어를 입력하세요" class="form-control" />
+						<button type="button" id="searchData" class="btn btn-success">검색</button>
+					</div>
+				</form>
+			</div>
 			
 			
 			<%-- 리스트 시작 --%>

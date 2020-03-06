@@ -62,7 +62,7 @@
 	</head>
 	<body>
 		<div class="contentContainer container">
-			<div class="contentTit page-header"><h3 class="text-center">게시판 글수정</h3></div>
+<!-- 			<div class="contentTit page-header"><h3 class="text-center">게시판 글수정</h3></div> -->
 			<form name="f_data" id="f_data" method="post">
                <input type="hidden" name="b_num" value="${detail.b_num}"/>
             </form>

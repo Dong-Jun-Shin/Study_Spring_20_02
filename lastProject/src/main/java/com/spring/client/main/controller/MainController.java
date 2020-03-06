@@ -7,11 +7,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class MainController {
 	
+//	@RequestMapping(value = "/", method = RequestMethod.GET)
+//	public String main() {
+//		return "main";
+//	}
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main() {
-		return "main";
+		return "index";
 	}
-	
+
 	@RequestMapping(value = "/list")
 	public String list() {
 		return "list";

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+  "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+  
+<tiles-definitions>
+	<definition name="intro" template="/WEB-INF/views/template/client/mainLayout.jsp">
+		<put-attribute name="title" value="My Spring Page" />
+		<put-attribute name="header" value="/WEB-INF/views/template/client/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/template/client/footer.jsp" />
+	</definition>
+	
+	<definition name="content" template="/WEB-INF/views/template/client/contentLayout.jsp">
+		<put-attribute name="title" value="My Spring Page" />
+		<put-attribute name="header" value="/WEB-INF/views/template/client/header.jsp" />
+		<put-attribute name="body" value="" />
+		<put-attribute name="footer" value="/WEB-INF/views/template/client/footer.jsp" />
+	</definition>
+
+	<!-- extends 속성으로 상속을 받아, 별도 명시하지 않은  속성은 그대로 사용-->
+	<definition name="board/*" extends="content">
+		<put-attribute name="title" value="기본 게시판" />
+		<!-- {1} - 요청 URL에서 첫번째 *자리의 문자 (board/*/*라면 {1}, {2}가 존재 )-->
+		<put-attribute name="body" value="/WEB-INF/views/board/{1}.jsp" />
+	</definition>
+</tiles-definitions>
