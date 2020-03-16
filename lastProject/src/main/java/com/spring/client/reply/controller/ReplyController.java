@@ -35,7 +35,7 @@ import lombok.extern.log4j.Log4j;
  * @RequestBody :JSON 데이터를 원하는 타입으로 바인딩 처리한다.
  */
 @RestController
-@RequestMapping(value = "/repIies")
+@RequestMapping(value = "/replies")
 @Log4j
 @AllArgsConstructor
 public class ReplyController {
@@ -43,12 +43,20 @@ public class ReplyController {
 	private ReplyService replyService;
 
 	/**
-	 * 댓글 글목록 구현하기*@return List<ReplyVO>*참고:
-	 * 
-	 * @PathVariable는 URI의 경로에서 원하는 데이터를 추출하는 용도의 어노테이션.
-	 * 현재 요청 URL:http://localhost:8080/replies/all/게시판글번호
+	 * 댓글 글목록 구현하기*@return List<ReplyVO>
+	 * 참고: 
+	 * @PathVariable({템플릿 변수}) : URI의 경로에서 원하는 데이터를 추출하는 용도의 어노테이션.
+	 * 어노테이션에 사용할 값을 mapping value에 {템플릿 변수}로 선언해놓는다.
+	 * 현재 요청 URL:http://localhost:8080/replies/all/{게시판글번호}
 	 * 예전 요청 URL:http://localhost:8080/replies/replylist?b_num=게시판글번호
+	 * 
+	 * ResponseEntity<message 타입>(message, status) : 상태코드는 필수적으로 리턴
+	 * (1) 단순한 메시지(String)과 상태코드(200)를 리턴하는 것
+	 * (2) 객체를 응답하고 상태코드를 오류로 반환하는 것
+	 * (3) 상태코드만을 리턴하는 것
+	 * (4) header 와 상태코드를 리턴하는 메서드
 	 */
+	// 비어있는 {b_num}.json으로 받아온다.
 	@GetMapping(value = "/all/{b_num}", produces = { MediaType.APPLICATION_XML_VALUE,
 			MediaType.APPLICATION_JSON_UTF8_VALUE })
 	public ResponseEntity<List<ReplyVO>> replylist(@PathVariable("b_num") Integer b_num) {
@@ -63,7 +71,7 @@ public class ReplyController {
 	 * 댓글 글쓰기 구현하기
 	 * 
 	 * @return String 
-	 * 참고 : @RequestBody
+	 * 참고 : @RequestBody : 일반적인 파라미터가 아닌, application/json과 같은 형식을 받아와서 vo에 맵핑할 때 사용
 	 */
 	@PostMapping(value = "/replyInsert", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
 	public ResponseEntity<String> replyInsert(@RequestBody ReplyVO rvo) {
@@ -144,7 +152,7 @@ public class ReplyController {
 		log.info("r_num = " + r_num);
 
 		int result = replyService.replyDelete(r_num);
-		return result == 1 ? new ResponseEntity<String>(" SUCCESS", HttpStatus.OK)
+		return result == 1 ? new ResponseEntity<String>("SUCCESS", HttpStatus.OK)
 				: new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 }

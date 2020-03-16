@@ -155,9 +155,9 @@
 					</tbody>
 				</table>
 			</div>
-<!-- 			<div style="width: 90%; margin: 0px auto;"> -->
-<%-- 				<c:import url="/WEB-INF/board_comment/getCommentList.jsp" /> --%>
-<!-- 			</div> -->
+			<div style="width: 90%; margin: 0px auto;">
+				<jsp:include page="reply.jsp" />
+			</div>
 		</div>
 	</body>
 </html>

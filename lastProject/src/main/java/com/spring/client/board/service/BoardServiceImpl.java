@@ -9,9 +9,7 @@ import com.spring.client.board.dao.BoardDAO;
 import com.spring.client.board.vo.BoardVO;
 
 import lombok.Setter;
-import lombok.extern.log4j.Log4j;
 
-@Log4j
 @Service
 public class BoardServiceImpl implements BoardService{
 	

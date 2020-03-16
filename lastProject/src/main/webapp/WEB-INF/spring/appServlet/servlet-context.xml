@@ -14,6 +14,8 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<!-- <resources mapping="/맵핑명/**" location="실제 파일을 업로드할 경로 지정" /> -->
+	<resources mapping="/uploadStorage/**" location="C:\Users\user\Desktop\GitHub\uploadStorage" />
 
 	<!-- 1. 스프링 프레임워크의 ViewResolver -->
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
@@ -65,6 +67,11 @@
 		<beans:property name="order" value="2" />
 	</beans:bean>
 	
+	<!-- 파일 첨부를 위한 bean -->
+	<beans:bean id="multipartResolver"
+		class="org.springframework.web.multipart.support.StandardServletMultipartResolver">
+	</beans:bean>
+
 	<!-- ** : 모든 패키지 폴더 -->
 	<!-- 지정 패키지 내의 객체들을 찾아서 생성 -->
 	<context:component-scan base-package="com.spring.**" />

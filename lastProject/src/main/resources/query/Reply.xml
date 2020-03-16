@@ -4,7 +4,7 @@
 	<!-- 댓글 전체 조회 (해당 게시물번호에 대해) -->
 	<select id="replyList" parameterType="reply" resultType="reply">
 		select r_num, b_num, r_name, r_content, r_pwd,
-		to_char(r_date,'YYYY-MM-DD HH24:Ml:SS') as r_date
+		to_char(r_date,'YYYY-MM-DD HH24:MI:SS') as r_date
 		from spring_reply
 		where b_num = #{b_num}
 		order by r_num desc

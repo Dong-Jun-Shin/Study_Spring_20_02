@@ -7,5 +7,7 @@
 	<typeAliases>
 		<!-- 타입에 대한 별칭부여. BoardVO 타입을 가진 '별칭 board'라는 객체 -->
 		<typeAlias type="com.spring.client.board.vo.BoardVO" alias="board"/>
+		<typeAlias type="com.spring.client.reply.vo.ReplyVO" alias="reply"/>
+		<typeAlias type="com.spring.client.gallery.vo.GalleryVO" alias="gallery"/>
 	</typeAliases>
 </configuration>
