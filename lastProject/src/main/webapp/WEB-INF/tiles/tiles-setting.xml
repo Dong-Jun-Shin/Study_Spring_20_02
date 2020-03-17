@@ -23,4 +23,16 @@
 		<!-- {1} - 요청 URL에서 첫번째 *자리의 문자 (board/*/*라면 {1}, {2}가 존재 )-->
 		<put-attribute name="body" value="/WEB-INF/views/board/{1}.jsp" />
 	</definition>
+	<definition name="gallery/*" extends="content">
+		<put-attribute name="title" value="갤러리" />
+		<put-attribute name="body" value="/WEB-INF/views/gallery/{1}.jsp" />
+	</definition>
+	<definition name="member/*" extends="content">
+		<put-attribute name="title" value="로그인 및 회원 관리" />
+		<put-attribute name="body" value="/WEB-INF/views/member/{1}.jsp" />
+	</definition>
+	<definition name="multiple/*" extends="content">
+		<put-attribute name="title" value="게시판 관리(다중 첨부 파일)" />
+		<put-attribute name="body" value="/WEB-INF/views/multiple/{1}.jsp" />
+	</definition>
 </tiles-definitions>

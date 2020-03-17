@@ -11,7 +11,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper=false)
 public class GalleryVO extends CommonVO{
 	private int g_num;
-	private String g_nmae;
+	private String g_name;
 	private String g_subject;
 	private String g_content;
 	private MultipartFile file; //업로드할 파일만큼 선언한다.

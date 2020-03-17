@@ -14,8 +14,8 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<!-- <resources mapping="/맵핑명/**" location="실제 파일을 업로드할 경로 지정" /> -->
-	<resources mapping="/uploadStorage/**" location="C:\Users\user\Desktop\GitHub\uploadStorage" />
+	<!-- <resources mapping="/맵핑명/**" location="실제 파일을 업로드할 경로 지정" 외부 경로의 경우 file:///이 필요 /> -->
+	<resources mapping="/uploadStorage/**" location="file:///C:/Users/user/Desktop/GitHub/uploadStorage/" />
 
 	<!-- 1. 스프링 프레임워크의 ViewResolver -->
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->

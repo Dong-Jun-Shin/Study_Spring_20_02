@@ -18,6 +18,9 @@
 			<li class="active"><a href="/">Home</a></li>
 			<li><a href="/board/boardList">게시판</a></li>
 			<li><a href="/gallery/galleryList">갤러리</a></li>
+			<li><a href="/member/login">로그인</a></li>
+			<li><a href="/multiple/multipleBoardList">게시판(다중첨부파일)</a></li>
+			
 <!-- 			<li class="dropdown"> -->
 <!-- 				<a href="#" class="dropdown-toggle" -->
 <!-- 					data-toggle="dropdown" role="button" aria-expanded="false">Dropdown -->
