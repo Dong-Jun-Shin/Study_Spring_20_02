@@ -20,7 +20,7 @@ public class GalleryServiceImpl implements GalleryService{
 	@Setter(onMethod_ = @Autowired)
 	private GalleryDAO galleryDao;
 	
-	// 글목록 구현
+	// 갤러리 글목록 구현
 	@Override
 	public String galleryList(GalleryVO gvo) {
 		List<GalleryVO> list = null;
@@ -37,7 +37,23 @@ public class GalleryServiceImpl implements GalleryService{
 		return listData;
 	}
 
-	// 글 등록
+	// 갤러리 글 상세보기
+	@Override
+	public String galleryDetail(GalleryVO gvo) {
+		String data = "";
+		GalleryVO vo = galleryDao.galleryDetail(gvo);
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			data = mapper.writeValueAsString(vo);
+//			logger.info(data);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		
+		return data;
+	}
+	
+	// 갤러리 글 등록
 	@Override
 	public int galleryInsert(GalleryVO gvo) {
 		int result = 0;
@@ -54,6 +70,66 @@ public class GalleryServiceImpl implements GalleryService{
 			e.printStackTrace();
 			result = 0;
 		}
+		return result;
+	}
+
+	//갤러리 글 수정
+	@Override
+	public int galleryUpdate(GalleryVO gvo) {
+		int result = 0;
+		
+		try {
+			if(gvo.getFile() !=null) {
+				if(!gvo.getG_file().isEmpty()) {
+					FileUploadUtil.fileDelete(gvo.getG_file());
+					FileUploadUtil.fileDelete(gvo.getG_thumb());
+				}
+				String fileName = FileUploadUtil.fileUpload(gvo.getFile(), "gallery");
+				gvo.setG_file(fileName);
+				
+				String thumbName = FileUploadUtil.makeThumbnail(fileName);
+				gvo.setG_thumb(thumbName);
+			}else {
+				gvo.setG_file("");
+				gvo.setG_thumb("");
+			}
+			gvo.setG_pwd((gvo.getG_pwd() == null) ? "" : gvo.getG_pwd());
+			
+			result = galleryDao.galleryUpdate(gvo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = 0;
+		}
+		
+		return result;
+	}
+
+	//갤러리 글 삭제
+	@Override
+	public int galleryDelete(GalleryVO gvo) {
+		int result = 0;
+		
+		try {
+			GalleryVO vo = galleryDao.galleryDetail(gvo);
+			
+			FileUploadUtil.fileDelete(vo.getG_file());
+			FileUploadUtil.fileDelete(vo.getG_thumb());
+			
+			result = galleryDao.galleryDelete(gvo.getG_num());
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = 0;
+		}
+		
+		return result;
+	}
+	
+	// 비밀번호 체크
+	@Override
+	public int pwdConfirm(GalleryVO gvo) {
+		int result = 0;
+		result = galleryDao.pwdConfirm(gvo);
+		
 		return result;
 	}
 }

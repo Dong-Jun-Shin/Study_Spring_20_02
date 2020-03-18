@@ -11,7 +11,12 @@
 	</appender>
 	
 	<!-- Application Loggers -->
+	<!-- log를 확인하고자 할 때는 해당 패키지를 추가해줘야 한다. -->
 	<logger name="com.spring.client">
+		<level value="info" />
+	</logger>
+	
+	<logger name="com.spring.common">
 		<level value="info" />
 	</logger>
 	

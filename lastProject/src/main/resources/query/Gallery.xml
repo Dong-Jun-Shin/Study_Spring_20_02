@@ -11,6 +11,24 @@
 		ORDER BY g_num DESC
 	</select>
 	
+	<!-- 비밀번호 확인 -->
+	<select id="pwdConfirm" parameterType="gallery" resultType="int">
+		/* gallery - pwdConfirm */
+		SELECT NVL((
+				SELECT 1 FROM spring_gallery
+				WHERE g_num = #{g_num} AND g_pwd = #{g_pwd}
+			), 0) as state
+		FROM dual
+	</select>
+	
+	<!-- 갤러리 글 상세정보 조회 -->
+	<select id="galleryDetail" parameterType="gallery" resultType="gallery">
+		SELECT g_num, g_name, g_subject, g_content, g_thumb, g_file,
+			TO_CHAR(g_date, 'YYYY.MM.DD') AS g_date
+		FROM spring_gallery 
+		WHERE g_num = #{g_num}
+	</select>
+	
 	<!-- 갤러리 등록 -->
 	<insert id="galleryInsert" parameterType="gallery">
 		/* gallery - galleryInsert */
@@ -19,9 +37,26 @@
 		</selectKey>
 		
 		INSERT INTO spring_gallery
-		(g_num, g_name, g_subject, g_content, g_thumb, g_file, g_pwd)
+			(g_num, g_name, g_subject, g_content, g_thumb, g_file, g_pwd)
 		VALUES(#{g_num}, #{g_name}, #{g_subject}, #{g_content}, #{g_thumb},
-		#{g_file}, #{g_pwd})
-		
+			#{g_file}, #{g_pwd})
 	</insert>
+	
+	<!-- 갤러리 글 수정 -->
+	<update id="galleryUpdate" parameterType="gallery">
+		/* gallery - galleryUpdate */
+		UPDATE spring_gallery
+			SET g_subject = #{g_subject}, g_content = #{g_content}
+			<if test="g_thumb != ''">, g_thumb = #{g_thumb}</if>
+			<if test="g_file != ''">, g_file = #{g_file}</if>
+			<if test="g_pwd != ''">, g_pwd = #{g_pwd}</if>
+			,g_date = SYSDATE
+		WHERE g_num = #{g_num}
+	</update>
+	
+	<!-- 갤러리 글 삭제 -->
+	<delete id="galleryDelete" parameterType="int">
+		/* gallery - galleryDelete */
+		DELETE FROM spring_gallery WHERE g_num = #{g_num}
+	</delete>
 </mapper>
