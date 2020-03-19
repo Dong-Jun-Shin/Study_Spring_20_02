@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.spring.client.board.dao.BoardDAO;
 import com.spring.client.board.vo.BoardVO;
+import com.spring.client.reply.dao.ReplyDAO;
 
 import lombok.Setter;
 
@@ -16,6 +17,9 @@ public class BoardServiceImpl implements BoardService{
 	@Setter(onMethod_ = @Autowired)
 	private BoardDAO boardDAO;
 
+    @Setter(onMethod_ = @Autowired)
+    private ReplyDAO replyDAO;
+	
 	//글 목록 조회
 	@Override
 	public List<BoardVO> boardList(BoardVO bvo) {
@@ -73,6 +77,15 @@ public class BoardServiceImpl implements BoardService{
 		int result = 0;
 		result = boardDAO.boardUpdate(bvo);
 		
+		return result;
+	}
+
+	//댓글이 존재하면 댓글수를 반환하고 존재하지 않으면 0을 반환
+	@Override
+	public int replyCnt(int b_num) {
+		int result = 0;
+	    result = replyDAO.replyCnt(b_num);
+
 		return result;
 	}
 }

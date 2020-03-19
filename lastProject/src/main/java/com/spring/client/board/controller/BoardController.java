@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -105,37 +106,6 @@ public class BoardController {
 	}
 	
 	/**
-	 * 글 삭제
-	 */
-	@RequestMapping(value = "/boardDelete")
-	public String boardDelete(@ModelAttribute("data") BoardVO bvo, RedirectAttributes ras) {
-		log.info("boardDelete 호출 성공");
-		log.info("글번호 확인 : " + bvo);
-		
-		//아래 변수에는 입력 성공에 대한 상태값 담습니다.(1 or 0)
-		int result = 0;
-		String url = "";
-		
-		result = boardService.boardDelete(bvo.getB_num());
-		
-		// 성공 여부를 가리기 위해 임시적으로 값을 전달할 때 RedirectAttributes, addFlashAttribute() 사용
-		// addAttribute()는 URL 뒤에 값을 붙여서 유지
-		// addFlashAttribute()는 일회성으로 세션 후 재지정 요청이 들어오면 값은 사라진다.
-		
-		//속성명은 받을 대상의 첫글자 소문자 이름
-		//문제 발생 시, 다시 돌아갈 페이지에 객체를 전달하는 구문
-		ras.addFlashAttribute("boardVO", bvo);
-		
-		if(result == 1) {
-			url="/board/boardList";
-		}else {
-			url="/board/boardDetail";
-		}
-		
-		return "redirect:" + url;
-	}
-	
-	/**
 	 * 글 수정 폼으로 이동
 	 * 
 	 * @param bvo
@@ -185,4 +155,51 @@ public class BoardController {
 		
 		return "redirect:" + url;
 	}
+	
+	/**
+	 * 글 삭제
+	 */
+	@RequestMapping(value = "/boardDelete")
+	public String boardDelete(@ModelAttribute("data") BoardVO bvo, RedirectAttributes ras) {
+		log.info("boardDelete 호출 성공");
+		log.info("글번호 확인 : " + bvo);
+		
+		//아래 변수에는 입력 성공에 대한 상태값 담습니다.(1 or 0)
+		int result = 0;
+		String url = "";
+		
+		result = boardService.boardDelete(bvo.getB_num());
+		
+		// 성공 여부를 가리기 위해 임시적으로 값을 전달할 때 RedirectAttributes, addFlashAttribute() 사용
+		// addAttribute()는 URL 뒤에 값을 붙여서 유지
+		// addFlashAttribute()는 일회성으로 세션 후 재지정 요청이 들어오면 값은 사라진다.
+		
+		//속성명은 받을 대상의 첫글자 소문자 이름
+		//문제 발생 시, 다시 돌아갈 페이지에 객체를 전달하는 구문
+		ras.addFlashAttribute("boardVO", bvo);
+		
+		if(result == 1) {
+			url="/board/boardList";
+		}else {
+			url="/board/boardDetail";
+		}
+		
+		return "redirect:" + url;
+	}
+	
+	/**
+	 * 글삭제전 댓글 개수 구현하기
+	 * @param b_num
+	 * @return String
+	 */
+    @ResponseBody
+    @RequestMapping(value="/replyCnt")
+    public String replyCnt(@RequestParam("b_num") int b_num) {
+       log.info("replyCnt 호출 성공");
+       
+       int result = 0;
+       result = boardService.replyCnt(b_num);
+
+       return String.valueOf(result);
+    }
 }

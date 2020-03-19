@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.spring.client.reply.dao.ReplyDao">
+<mapper namespace="com.spring.client.reply.dao.ReplyDAO">
 	<!-- 댓글 전체 조회 (해당 게시물번호에 대해) -->
 	<select id="replyList" parameterType="reply" resultType="reply">
 		select r_num, b_num, r_name, r_content, r_pwd,
@@ -46,9 +46,9 @@
 		/* Reply - replyUpdate */
 		update spring_reply
 		set r_content = #{r_content}
-		,r_date = sysdate
+		, r_date = sysdate
 		<if test="r_pwd != ''">
-			,r_pwd = #{r_pwd}
+			, r_pwd = #{r_pwd}
 		</if>
 		where r_num = #{r_num}
 	</update>
