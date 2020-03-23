@@ -49,7 +49,7 @@
 					dataReset();
 					$('#replyModal').modal();
 				});
-
+				
 				/** 글입력을 위한 Ajax 연동 처리 */
 				$(document).on("click", "button[data-button='insertBtn']", function(){
 					var insertUrl = "/replies/replyInsert";

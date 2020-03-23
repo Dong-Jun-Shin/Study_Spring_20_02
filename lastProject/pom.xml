@@ -227,11 +227,30 @@
 		
 		<!-- excel - read write -->
 		<!--  jXLS 라이브러리는 POI 패키지를 기반으로 동작하기 떄문에 jXLS 라이브러리 사용시 POI 라이브러리도 함께 사용 -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.9</version>
-		</dependency>
+	    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+	    <dependency>
+	       <groupId>org.apache.poi</groupId>
+	       <artifactId>poi</artifactId>
+	       <version>3.9</version>
+	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+	    <dependency>
+	       <groupId>org.apache.poi</groupId>
+	       <artifactId>poi-ooxml</artifactId>
+	       <version>3.9</version>
+	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/net.sf.jxls/jxls-core -->
+	    <dependency>
+	        <groupId>net.sf.jxls</groupId>
+	        <artifactId>jxls-core</artifactId>
+	        <version>1.0.2</version>
+	    </dependency>
+	    <!-- https://mvnrepository.com/artifact/net.sf.jxls/jxls-reader -->
+	    <dependency>
+	       <groupId>net.sf.jxls</groupId>
+	        <artifactId>jxls-reader</artifactId>
+	        <version>1.0.2</version>
+	    </dependency>
 	</dependencies>
     <build>
         <plugins>

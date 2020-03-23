@@ -47,7 +47,7 @@
 			<tiles:insertAttribute name="sub" />
 			<tiles:insertAttribute name="main" />
         </div>
-      </div>
+      </div> 
     </div>
 
     <!-- Bootstrap core JavaScript

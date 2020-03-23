@@ -135,7 +135,13 @@
 							<option value="b_content">내용</option>
 							<option value="b_name">작성자</option>
 						</select>
-						<input type="text" name="keyword" id="keyword" value="검색어를 입력하세요" class="form-control" />
+						<div class="form-group" id="textCheck">
+							<input type="text" name="keyword" id="keyword" class="form-control" placeholder="검색어를 입력하세요.">
+						</div>
+						<div class="form-group" id="dateCheck">
+							<input type="date" name="start_date" id="start_date" placeholder="시작일자" class="form-control">
+							<input type="date" name="end_date" id="end_date" placeholder="종료일자" class="form-control">
+						</div>
 						<button type="button" id="searchData" class="btn btn-success">검색</button>
 					</div>
 				</form>
