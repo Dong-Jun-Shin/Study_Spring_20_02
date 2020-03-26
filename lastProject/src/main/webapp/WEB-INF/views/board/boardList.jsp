@@ -97,23 +97,33 @@
 					goPage();
 				});
 				
+				/* 페이지 번호 클릭 시, 처리 */
+				$(".paginate_button a").click(function(e){
+					// 기본 속성 해지 함수(ex) a의 href 속성을 해제)
+					e.preventDefault();
+					$("#f_search").find("input[name='pageNum']").val($(this).attr("href"));
+					// 페이지 번호에 따른 검색으로 페이징 구현 (실질적인 요청)
+					goPage();
+				});
+				
 				/* 글쓰기 버튼 클릭 시 처리 이벤트 */
 				$("#insertFormBtn").click(function(){
 					location.href = "/board/writeForm";
 				});
 				
-				/* 검색 기능을 수행할 함수 */
-				function goPage(){
-					if($("#search").val()=="all"){
-						$("#keyword").val("");
-					}
-					$("#f_search").attr({
-						"method":"get",
-						"action":"/board/boardList"
-					});
-					$("#f_search").submit();
-				}
 			});
+
+			/* 검색 기능과 페이징을 수행할 함수 */
+			function goPage(){
+				if($("#search").val()=="all"){
+					$("#keyword").val("");
+				}
+				$("#f_search").attr({
+					"method":"get",
+					"action":"/board/boardList"
+				});
+				$("#f_search").submit();
+			}
 		</script>
 	</head>
 	<body>
@@ -127,6 +137,10 @@
 			<%-- 검색기능 시작 --%>
 			<div id="boardSearch" class="text-right">
 				<form id="f_search" name="f_search" class="form-inline">
+					<%-- 현재 페이지 번호 (기본값 1)--%>
+					<input type="hidden" name="pageNum" value="${pageMaker.cvo.pageNum }">
+					<%-- 한 페이지당 보여준 개수 (기본값 10) --%>
+					<input type="hidden" name="amount" value="${pageMaker.cvo.amount }">
 					<div class="form-group">
 						<label>검색조건</label>
 						<select id="search" name="search" class="form-control">
@@ -208,6 +222,39 @@
 				
 			</div>
 			<%-- 리스트 종료 --%>
+			
+			<%-- 페이징 처리  시작--%>
+<!-- 			<div class="text-center"> -->
+<!-- 				<ul class="pagination"> -->
+<%-- 					이전 페이지의 존재 여부에 따른 출력 --%>
+<%-- 					<c:if test="${pageMaker.prev }"> --%>
+<!-- 						<li class="paginate_button previous"> -->
+<%-- 							데이터를 얻기 위한 링크 --%>
+<%-- 							<a href="${pageMaker.startPage -1 }">Previous</a> --%>
+<!-- 						</li> -->
+<%-- 					</c:if> --%>
+					
+<%-- 					<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}"> --%>
+<%-- 						<li class="paginate_button ${pageMaker.cvo.pageNum == num ? 'active':'' }"> --%>
+<%-- 							<a href="${num} ">${num}</a> --%>
+<!-- 						</li> -->
+<%-- 					</c:forEach> --%>
+					
+<%-- 					다음 페이지의 존재 여부에 따른 출력 --%>
+<%-- 					<c:if test="${pageMaker.next}"> --%>
+<!-- 						<li class="paginate_button next"> -->
+<%-- 							<a href="${pageMaker.endPage +1 }">Next</a> --%>
+<!-- 						</li> -->
+<%-- 					</c:if> --%>
+<!-- 				</ul> -->
+<!-- 			</div> -->
+
+				<div class="text-center">
+					<tag:pagination pageNum="${pageMaker.cvo.pageNum }" amount="${pageMaker.cvo.amount }"
+					startPage="${pageMaker.startPage }" endPage="${pageMaker.endPage }"
+					prev="${pageMaker.prev }" next="${pageMaker.next }" />
+				</div>
+			<%-- 페이징 처리  끝--%>
 			
 			<%-- 글쓰기 버튼 출력 시작 --%>
 			<div class="text-right">

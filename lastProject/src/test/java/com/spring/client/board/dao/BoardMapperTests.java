@@ -23,12 +23,30 @@ public class BoardMapperTests {
 	@Test
 	public void testBoardList() {
 		BoardVO bvo = new BoardVO();
+		bvo.setPageNum(2);
+		bvo.setAmount(10);
+		
+		//검색 조건 부여
+//		bvo.setSearch("b_title");
+//		bvo.setKeyword("08");
+		
 //		bdao.boardList(bvo).forEach(board -> log.info(board));
 		List<BoardVO> list = bdao.boardList(bvo);
 		for (BoardVO vo : list) {
 			log.info(vo);
 		}
 		
+	}
+	
+	@Test
+	public void testBoardListCnt() {
+		BoardVO bvo = new BoardVO();
+		//검색 조건 부여
+//		bvo.setSearch("b_title");
+//		bvo.setKeyword("08");
+		
+		int cnt = bdao.boardListCnt(bvo);
+		log.info(cnt);
 	}
 	
 //	@Test

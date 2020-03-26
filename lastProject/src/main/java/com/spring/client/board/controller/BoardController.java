@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.spring.client.board.service.BoardService;
 import com.spring.client.board.vo.BoardVO;
+import com.spring.common.vo.PageDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
@@ -38,6 +39,12 @@ public class BoardController {
 		// 전체 레코드 조회
 		List<BoardVO> boardList = boardService.boardList(bvo);
 		model.addAttribute("boardList", boardList);
+	
+		// 전체 레코드 수 조회
+		int total = boardService.boardListCnt(bvo);
+		
+		// 페이징 처리 (CommonVO 자리에 하위 클래스를 전달)
+		model.addAttribute("pageMaker", new PageDTO(total, bvo));
 		
 		return "board/boardList";
 	}
@@ -48,7 +55,14 @@ public class BoardController {
 		
 		return "board/writeForm";
 	}
-
+	
+	/**
+	 * 게시물 등록
+	 * 
+	 * @param bvo
+	 * @param model
+	 * @return String
+	 */
 	// @PostMapping("/boardInsert")
 	@RequestMapping(value = "/boardInsert", method = RequestMethod.POST)
 	public String boardInsert(BoardVO bvo, Model model) {

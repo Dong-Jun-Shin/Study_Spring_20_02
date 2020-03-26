@@ -29,6 +29,13 @@ public class BoardServiceImpl implements BoardService{
 		return list;
 	}
 
+	//전체 게시물 수 조회
+	@Override
+	public int boardListCnt(BoardVO bvo) {
+		return boardDAO.boardListCnt(bvo);
+		
+	}
+	
 	//글 등록
 	@Override
 	public int boardInsert(BoardVO bvo) {
@@ -65,17 +72,17 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public int boardDelete(int b_num) {
-		int result = 0;
-		result = boardDAO.boardDelete(b_num);
-		
-		return result;
-	}
-
-	@Override
 	public int boardUpdate(BoardVO bvo) {
 		int result = 0;
 		result = boardDAO.boardUpdate(bvo);
+		
+		return result;
+	}
+	
+	@Override
+	public int boardDelete(int b_num) {
+		int result = 0;
+		result = boardDAO.boardDelete(b_num);
 		
 		return result;
 	}

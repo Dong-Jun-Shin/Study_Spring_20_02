@@ -3,6 +3,23 @@
 <!-- 구현된 클래스가 위치할 곳을 가리킴 -->
 <mapper namespace="com.spring.client.board.dao.BoardDAO">
 	<!-- board : com.spring.client.board.vo.BoardVO -->
+	
+	<!-- 따로 분리해서 sql을 만듬 -->
+	<sql id="boardSearch">
+		<if test="search=='b_title'">
+			<![CDATA[b_title LIKE '%' || #{keyword} || '%']]>
+		</if>
+		<if test="search=='b_content'">
+			<![CDATA[b_content LIKE '%' || #{keyword} || '%']]>
+		</if>
+		<if test="search=='b_name'">
+			<![CDATA[b_name LIKE '%' || #{keyword} || '%']]>
+		</if>
+		<if test="search=='b_date'">
+			<![CDATA[to_char(b_date, 'YYYY-MM-DD') between #{start_date} and #{end_date}]]>
+		</if>
+	</sql>
+	
 	<!-- 게시판 리스트 기본 조회 -->
 <!-- 	<select id="boardList" parameterType="board" resultType="board"> -->
 <!-- 		SELECT b_num, b_name, b_title, to_char(b_date, 'YYYY-MM-DD') as b_date -->
@@ -11,23 +28,60 @@
 <!-- 	</select> -->
 
 	<!-- 게시판 리스트 검색 구문 추가 -->
+<!-- 	<select id="boardList" parameterType="board" resultType="board"> -->
+<!-- 		SELECT b_num, b_name, b_title, to_char(b_date, 'YYYY-MM-DD') as b_date -->
+<!-- 		FROM spring_board -->
+		
+	 		<!-- if가 만족할 때만 where가 추가 -->
+<!-- 		<where> -->
+<!-- 			<if test="search=='b_title'"> -->
+<!-- 				<![CDATA[b_title LIKE '%' || #{keyword} || '%']]> -->
+<!-- 			</if> -->
+<!-- 			<if test="search=='b_content'"> -->
+<!-- 				<![CDATA[b_content LIKE '%' || #{keyword} || '%']]> -->
+<!-- 			</if> -->
+<!-- 			<if test="search=='b_name'"> -->
+<!-- 				<![CDATA[b_name LIKE '%' || #{keyword} || '%']]> -->
+<!-- 			</if> -->
+<!-- 		</where> -->
+<!-- 		ORDER BY b_num desc -->
+<!-- 	</select> -->
+
+	<!-- 페이지당 게시물 리스트(페이징 처리와 검색 처리) -->
+	<!-- hint를 포함한 구문에 오류가 생기는 것을 방지하고자 <![CDATA[]]>로 처리 -->
 	<select id="boardList" parameterType="board" resultType="board">
-		SELECT b_num, b_name, b_title, to_char(b_date, 'YYYY-MM-DD') as b_date
-		FROM spring_board
-		<!-- if가 만족할 때만 where가 추가 -->
-		<where>
-			<if test="search=='b_title'">
-				<![CDATA[b_title LIKE '%' || #{keyword} || '%']]>
-			</if>
-			<if test="search=='b_content'">
-				<![CDATA[b_content LIKE '%' || #{keyword} || '%']]>
-			</if>
-			<if test="search=='b_name'">
-				<![CDATA[b_name LIKE '%' || #{keyword} || '%']]>
-			</if>
-		</where>
-		ORDER BY b_num desc
+		<![CDATA[
+		SELECT 
+		    rnum, b_num, b_name, b_title, to_char(b_date, 'YYYY-MM-DD') as b_date
+		FROM(
+		    SELECT /*+ INDEX_DESC(spring_board spring_board_pk) */
+		        rownum as rnum, b_num, b_name, b_title, b_date
+		    FROM spring_board 
+		    WHERE]]>
+		    	<!-- Non-Over는 붙여주는 것, Overrides는 지워주는 것 -->
+		    	<!-- if 조건 만족 :  (if 참의 문자열)AND -> (b_title LIKE '%' || #{keyword} || '%') AND -->
+		    	<!-- if 조건 불만족 : AND가 있을 경우, AND 삭제-->
+			    <trim prefix="(" suffix=") AND " prefixOverrides="AND">
+	    			<include refid="boardSearch"></include>
+			    </trim>
+	    		<![CDATA[rownum <= #{pageNum} * #{amount}
+	    ) boardlist
+		WHERE rnum > (#{pageNum} - 1) * #{amount} ]]>
 	</select>
+
+	<!-- 전체 레코드 수 조회 -->
+	<select id="boardListCnt" parameterType="board" resultType="int">
+		SELECT count(*) FROM spring_board
+		<trim prefix=" WHERE (" suffix=")">
+			<include refid="boardSearch"></include>
+		</trim>
+	</select>
+
+	<!-- 게시판 글 등록 -->	
+<!-- 	<insert id="boardInsert" parameterType="board"> -->
+<!-- 		INSERT INTO spring_board(b_num, b_name, b_title, b_content, b_pwd)  -->
+<!-- 		VALUES(spring_board_seq.NEXTVAL, #{b_name}, #{b_title}, #{b_content}, #{b_pwd}) -->
+<!-- 	</insert> -->
 
 	<!-- 게시판 글 등록 -->	
 	<insert id="boardInsert" parameterType="board">
