@@ -37,11 +37,19 @@
 		<link rel="stylesheet" type="text/css" href="/resources/include/css/lightbox.min.css" />
 		<script type="text/javascript" src="/resources/include/js/lightbox.min.js"></script>
 		
+		<!-- 페이지 네비게이션은 게시물의 총수를 이용하여 목록 수 만큼 페이지를 구현.  -->
+        <script type="text/javascript" src="/resources/include/js/pagenavigator.js"></script>     
 		<script type="text/javascript">
 			var message = "입력한 비밀번호를 입력해 주세요.", btnKind="", galleryNum = 0;
+		    var pageNum = 1;
+            var paging = $(".paging");
 			
 			$(function(){
+		        //데이터 조회
 				listData();
+
+		        //페이징 초기화
+				pagenav();
 				
 				if(!$("#galleryBtn").attr("data-button")){
 					$("#galleryBtn").attr("data-button", "insertBtn");
@@ -96,15 +104,35 @@
 						$("#f_writeForm").submit();
 					}
 				});
+				
+				// 페이지 버튼 클릭 시, 페이징 처리
+				paging.on("click",".pagination li a", function(e){
+                    e.preventDefault();
+                    
+ 	                var targetPageNum = $(this).attr("href");
+ 	                console.log("targetPageNum: " + targetPageNum);
+	                pageNum = targetPageNum;
+	
+	                $("#pageNum").val(targetPageNum);
+	                pagenav();
+				});
 			}); //최상위 $ 종료
+			
+			// 페이징 처리
+			function pagenav(){
+	             listData().then(function(galleryCnt){
+	                   showPage(pageNum, galleryCnt, paging);
+	             });
+	   	    }
 			
 			//갤러리 리스트 요청 처리
 			function listData(){
 				console.log("리스트 출력");
 				$("#rowArea").html("");
+				var def = new $.Deferred();
 				var count = 0;
 				
-				$.getJSON("/gallery/galleryData", function(data){
+				$.getJSON("/gallery/galleryData", $("#f_search").serialize(), function(data){
 					console.log("length: " + data.length);
 					$(data).each(function(index){
 						var g_num = this.g_num;
@@ -114,12 +142,18 @@
 						var g_thumb = this.g_thumb;
 						var g_file = this.g_file;
 						var g_date = this.g_date;
-						thumbnailList(g_num, g_name, g_subject, g_content, g_thumb, g_file, g_date, index);
+						if(index==0) count = this.g_count;
+                        
+						thumbnailList(g_num, g_name, g_subject, g_content, 
+                                  g_thumb, g_file, g_date, index);
+                     	});
+
+	                   	def.resolve(count);
 // 						accordionList(g_num, g_name, g_subject, g_content, g_thumb, g_file, g_date, index);
-					});
 				}).fail(function(){
 					alert("목록을 불러오는데 실패하였습니다. 잠시후에 다시 시도해 주세요.");
 				});
+				return def.promise();
 			}
 			
 			//부트스트랩을 활용하여 썸네일 요소를 동적으로 생성(콤포넌트 - 썸네일(Thumbnails))
@@ -352,7 +386,9 @@
 						success : function(data){
 							console.log(data);
 							if(data=="성공"){
-								listData();
+								listData().then(function(galleryCnt){
+                                    showPage(pageNum, galleryCnt, $(".paging"));
+                          		});
 								dataReset();
 								galleryNum = 0;
 								$("#galleryModal").modal("hide");
@@ -381,7 +417,10 @@
 						success : function(data){
 							if(data == "성공"){
 								galleryNum = 0;
-								listData();
+								$("#pageNum").val(1);
+                                listData().then(function(galleryCnt){
+                                   showPage(1, galleryCnt, $(".paging"));
+                                });
 							}
 						}
 					});
@@ -391,6 +430,11 @@
 	</head>
 	<body>
 		 <div class="contentContainer container">
+		 	<%-- ========= 페이징 처리를 위한 FORM ============= --%>
+            <form name="f_search" id="f_search">
+            	<input type="hidden" name="pageNum" id="pageNum" value="${data.pageNum}" />
+            	<input type="hidden" name="amount" id="amount" value="10" />
+            </form>
 		 	<%-- 등록 버튼 영역 --%>
 		 	<p class="text-right">
 		 		<button type="button" class="btn btn-primary" id="galleryInsertBtn">갤러리 등록</button>
@@ -459,6 +503,31 @@
 					</div>
 				</form>
 			</div>
+			<!-- Bootstrap 페이지 네비게이션 스타일 -->
+            <nav class="paging text-center">
+            	<ul class="pagination">
+					<!-- 이전 페이지의 존재 여부에 따른 출력 -->
+					<c:if test="${pageMaker.prev }">
+						<li class="paginate_button previous">
+							데이터를 얻기 위한 링크
+							<a href="${pageMaker.startPage -1 }">Previous</a>
+						</li>
+					</c:if>
+					
+					<c:forEach var="num" begin="${pageMaker.startPage}" end="${pageMaker.endPage}">
+						<li class="paginate_button ${pageMaker.cvo.pageNum == num ? 'active':'' }">
+							<a href="${num} ">${num}</a>
+						</li>
+					</c:forEach>
+					
+					<!-- 다음 페이지의 존재 여부에 따른 출력 -->
+					<c:if test="${pageMaker.next}">
+						<li class="paginate_button next">
+							<a href="${pageMaker.endPage +1 }">Next</a>
+						</li>
+					</c:if>
+				</ul>
+            </nav>
 		 </div>
 	</body>
 </html>

@@ -81,8 +81,7 @@ public class BoardController {
 	
 	@RequestMapping(value = "/boardDetail", method = RequestMethod.GET)
 	public String boardDetail(@ModelAttribute("data") BoardVO bvo, Model model) {
-		log.info("boardInsert 호출 성공");
-		log.info("bvo = " + bvo);
+		log.info("boardDetail 호출 성공");
 		
 		BoardVO detail = boardService.boardDetail(bvo);
 		model.addAttribute("detail", detail);

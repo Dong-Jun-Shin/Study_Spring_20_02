@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.spring.client.board.dao.BoardDAO;
 import com.spring.client.board.vo.BoardVO;
 import com.spring.client.reply.dao.ReplyDAO;
+import com.spring.common.log.LoggerAdvice;
 
 import lombok.Setter;
 
@@ -19,7 +20,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Setter(onMethod_ = @Autowired)
     private ReplyDAO replyDAO;
-	
+    
 	//글 목록 조회
 	@Override
 	public List<BoardVO> boardList(BoardVO bvo) {
@@ -40,6 +41,13 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int boardInsert(BoardVO bvo) {
 		int resultData = 0;
+	
+		// AOP를 활용한 log 확인을 위해 예외를 발생시키는 코드
+		bvo.setB_num(0);
+		if(bvo.getB_num() == 0) {
+			throw new IllegalArgumentException("0번 글은 등록할 수 없습니다.");
+		}
+		
 		resultData = boardDAO.boardInsert(bvo);
 		
 		return resultData;

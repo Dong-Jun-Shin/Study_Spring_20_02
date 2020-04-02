@@ -16,6 +16,10 @@
 		<level value="info" />
 	</logger>
 	
+	<logger name="com.spring.admin">
+		<level value="info" />
+	</logger>
+	
 	<logger name="com.spring.common">
 		<level value="info" />
 	</logger>

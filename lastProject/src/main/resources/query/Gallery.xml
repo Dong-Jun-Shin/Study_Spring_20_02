@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.spring.client.gallery.dao.GalleryDAO">
-	<!-- 갤러리 기본 조회 -->
-	<select id="galleryList" resultType="gallery">
-		/* gallery - galleryList */
-		SELECT
-			g_num, g_name, g_subject, g_content, g_thumb, g_file, 
-			to_char(g_date, 'YYYY.MM.DD') as g_date
-		FROM spring_gallery
-		ORDER BY g_num DESC
-	</select>
+	 <sql id="gallerySearch">
+         <if test="search=='g_subject'">
+                 <![CDATA[ g_subject LIKE '%'|| #{keyword} ||'%' ]]>                                             
+         </if>
+         <if test="search=='g_content'">
+                 <![CDATA[ g_content LIKE '%'|| #{keyword} ||'%' ]]>                                             
+         </if>
+         <if test="search=='g_name'">
+                 <![CDATA[ g_name LIKE '%'|| #{keyword} ||'%' ]]>                                               
+         </if>
+	</sql>
+
+	 <!-- 갤러리 전체 목록 조회 -->
+     <select id="galleryList" parameterType="gallery" resultType="gallery">
+        <![CDATA[ 
+             SELECT g_num, g_name, g_subject, g_content, g_thumb, g_file,
+                             to_char(g_date,'YYYY.MM.DD') as g_date   
+             FROM (
+		           SELECT /*+ INDEX_DESC(spring_gallery spring_gallery_pk) */
+		                     rownum as rnum, g_num, g_name, g_subject, g_content, g_thumb, g_file, g_date
+		           FROM spring_gallery
+		           WHERE ]]>
+		           <trim prefix="(" suffix=") AND " prefixOverrides="AND">
+		                      <include refid="gallerySearch"></include>
+		           </trim>
+		         <![CDATA[    rownum <= #{pageNum} * #{amount}
+		          )
+             WHERE rnum > (#{pageNum} - 1) * #{amount}
+         ]]>
+     </select>
+	
+	<!-- 갤러리 전체 목록 수  -->
+    <select id="galleryListCnt" parameterType="gallery" resultType="int">
+         /* gallery - galleryListCnt */
+         SELECT count(*) FROM spring_gallery
+         <trim prefix=" where (" suffix=")" >
+             <include refid="gallerySearch"></include>
+         </trim>
+    </select>
 	
 	<!-- 비밀번호 확인 -->
 	<select id="pwdConfirm" parameterType="gallery" resultType="int">

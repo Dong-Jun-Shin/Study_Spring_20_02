@@ -11,11 +11,13 @@ import com.spring.client.gallery.dao.GalleryDAO;
 import com.spring.client.gallery.vo.GalleryVO;
 import com.spring.common.file.FileUploadUtil;
 
+import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
+@AllArgsConstructor
 public class GalleryServiceImpl implements GalleryService{
 	@Setter(onMethod_ = @Autowired)
 	private GalleryDAO galleryDao;
@@ -27,9 +29,20 @@ public class GalleryServiceImpl implements GalleryService{
 		ObjectMapper mapper = new ObjectMapper();
 		String listData = "";
 		try {
-			list = galleryDao.galleryList(gvo);
-			listData = mapper.writeValueAsString(list);
-			log.info(listData);
+			  int g_count = galleryDao.galleryListCnt(gvo);
+              int pageNum = (gvo.getPageNum()==0? 1: gvo.getPageNum());
+              int amount = (gvo.getAmount()==0? 0 : gvo.getAmount());
+                 
+              log.info("g_count = " + g_count + " / pageNum = "+pageNum +" / amount = "+ amount);
+              list = galleryDao.galleryList(gvo);
+              if(!list.isEmpty()) {
+                       list.get(0).setG_count(g_count);
+                       list.get(0).setPageNum(pageNum);
+                       list.get(0).setAmount(amount);
+              }
+              
+              listData = mapper.writeValueAsString(list);
+              log.info(listData);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}

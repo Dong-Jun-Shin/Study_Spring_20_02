@@ -35,4 +35,8 @@
 		<put-attribute name="title" value="게시판 관리(다중 첨부 파일)" />
 		<put-attribute name="body" value="/WEB-INF/views/multiple/{1}.jsp" />
 	</definition>
+	<definition name="error/*" extends="content">
+		<put-attribute name="title" value="" />
+		<put-attribute name="body" value="/WEB-INF/views/error/{1}.jsp" />
+	</definition>
 </tiles-definitions>
